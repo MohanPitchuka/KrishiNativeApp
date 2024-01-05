@@ -1,0 +1,1 @@
+export const KRISHI_BACKEND_IP='http://10.159.62.207:8085';
