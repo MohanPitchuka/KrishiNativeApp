@@ -5,7 +5,6 @@ import Home from '../screens/Home/Home';
 import Paramarsh from '../screens/Paramarsh/Paramarsh';
 import Gyan from '../screens/Gyan/Gyan';
 import Activity from '../screens/Activity/Activity';
-import AuthChecker from '../utils/authChecker/AuthChecker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Image } from 'react-native';
 

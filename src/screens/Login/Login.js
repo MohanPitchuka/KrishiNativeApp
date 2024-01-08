@@ -4,6 +4,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Modal,
+  TouchableOpacity
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import React from 'react';
@@ -11,7 +12,6 @@ import {useState, useEffect} from 'react';
 import {Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useMutation} from '@tanstack/react-query';
-//   import {KRISHI_BACKEND_IP} from '../../utils/constants/constants';
 import {KRISHI_BACKEND_IP} from '../../utils/constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,12 +19,11 @@ import {getToken} from '../../utils/getToken/getToken';
 import { useNavigation} from '@react-navigation/native';
 
 const Login = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
 
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
-    console.log('toggled modal');
     setModalVisible(!isModalVisible);
   };
 
@@ -39,6 +38,10 @@ const Login = () => {
       inputs[index + 1].focus();
     }
   };
+
+  const [countDownTime, setCountDownTime] = useState(30);
+  const [startTimer, setStartTimer] = useState(false);
+  const [clickedResendOtp, setClickedResendOtp] = useState(false);
 
   const login = useMutation({
     mutationFn: async data =>
@@ -70,9 +73,10 @@ const Login = () => {
         {username: mobileNumber},
         {
           onSuccess: data => {
-            toggleModal();
           },
-          onError: data => console.log('Login api call failed - ', data),
+          onError: data => {
+            console.log('Login api call failed - ', data);
+          },
         },
       );
     } catch (error) {
@@ -87,22 +91,24 @@ const Login = () => {
         {
           onSuccess: async data => {
             if (data.status === 201 || data.status === 200) {
-              console.log(data);
               await AsyncStorage.setItem(
-                'Krishi_token',
+                'krishiAuthToken',
                 data.data.response.payload.token,
               );
               await AsyncStorage.setItem(
                 'isAuthenticated',
                 'true',
               );
-              console.log(data.data.response.payload.token);
+              await AsyncStorage.setItem(
+                'accountNumber',
+                data.data.response.payload.account_number,
+              );
+              const isAuthenticated = await AsyncStorage.getItem('isAuthenticated');
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'HomeScreen' }],
               });
               toggleModal();
-              console.log('getToken inside handle submit otp fucntion -' ,await getToken('Krishi_token'));
             }
           },
           onError: data => console.log('verify OTP api call failed -', data),
@@ -113,21 +119,22 @@ const Login = () => {
     }
   };
 
-  // const token = getToken('access_token');
-//   useEffect(() => {
-//     const getTokenFromStorage = async () =>{
-//         console.log('inside useEffect')
-//         const token = await getToken('krishi_token');
-//         console.log('token -', token);
-//         if (token !== null){
-//             navigation.reset({
-//                 index: 0,
-//                 routes: [{name: 'Home'}],
-//               });
-//         }
-//     }
-//     getTokenFromStorage();
-//   }, []);
+  const handleResendOTP = () =>{
+    console.log('clicked resend otp');
+    setCountDownTime(30);
+    setClickedResendOtp(true);
+    handleLogin();
+  }
+
+  useEffect(() => {
+    if (startTimer){
+      if (countDownTime !== 0){
+        setTimeout(() => {
+          setCountDownTime(countDownTime -1);
+        }, 1000);
+      }
+    }
+  }  ,[countDownTime]);
 
   return (
     <View style={styles.container}>
@@ -160,16 +167,23 @@ const Login = () => {
               padding: 40,
             }}>
             <Text style={styles.title}>Enter OTP</Text>
-            <Text>Please enter the OTP sent to Your Mobile no.</Text>
-            <Text>{mobileNumber}</Text>
+            <Text style={{color:'#000000', fontSize:14}}>Please enter the OTP sent to Your Mobile no.</Text>
+            <Text style={{color:'#000000', fontSize:14}}>{mobileNumber}</Text>
             <Button
               mode="outlined"
               style={{
                 alignSelf: 'flex-start',
-                borderColor: 'gray',
+                borderColor: '#999999',
                 borderRadius: 24,
                 borderWidth: 2,
                 marginTop: 20,
+              }}
+              labelStyle={{
+                color: '#03753C',
+                fontWeight: 'bold',
+                fontSize: 16,
+                lineHeight: 24,
+                letterSpacing : 0.08,
               }}
               onPress={toggleModal}>
               CHANGE MOBILE NUMBER
@@ -189,14 +203,42 @@ const Login = () => {
                 />
               ))}
             </View>
-            <Text>OTP send to Mobile Number Successfully</Text>
-            <View>
-              <Text>Wait for {10} sec</Text>
-              <Text>Resend OTP</Text>
+            <Text style={{color: '#03753C', fontSize: 16, lineHeight: 24, letterSpacing: 0.08, fontWeight: '600' }}>{clickedResendOtp === true ? 'OTP send to Mobile Number Successfully.' : ''}</Text>
+            <View style={{flex:1 , flexDirection: 'row' , justifyContent: 'flex-end'}}>
+              {countDownTime !== 0 ? 
+              <Text style={{paddingRight : 16 , color : '#000000', fontSize: 14, fontWeight: '500', lineHeight: 24, letterSpacing: 0.08}}>Wait for {countDownTime} sec</Text>
+              : 
+              <Text></Text>}
+              {countDownTime !== 0 ?  
+              <TouchableOpacity disabled={true}>
+              <Text style={{color: countDownTime !== 0 ?  '#aaaaaa' : '#03753C' , fontSize: 14, fontWeight: '700', lineHeight: 24, letterSpacing: 0.08 }}>Resend OTP</Text>
+              </TouchableOpacity>
+              : 
+              <TouchableOpacity onPress={handleResendOTP}>
+                <Text style={{color: countDownTime !== 0 ?  '#aaaaaa' : '#03753C' , fontSize: 14, fontWeight: '700', lineHeight: 24, letterSpacing: 0.08 }}>Resend OTP</Text>
+              </TouchableOpacity>
+              }
+              
+              
             </View>
-            <Button mode="contained-tonal" onPress={handleOTPSubmit}>
-              SUBMIT OTP
-            </Button>
+            {otp.every((value) => value !== '') ? (
+              <Button
+                mode="contained-tonal"
+                onPress={() => {
+                  handleOTPSubmit();
+                }}
+                style={styles.button}>
+                <Text style={{color: 'white'}}>SUBMIT OTP</Text>
+              </Button>
+            ) : (
+              <Button
+                mode="contained-tonal"
+                disabled
+                onPress={() => {}}
+                style={styles.disabledButton}>
+                <Text style={{color: '#97a79b'}}>SUBMIT OTP</Text>
+              </Button>
+            )}
           </View>
         </View>
       </Modal>
@@ -211,8 +253,10 @@ const Login = () => {
           <Button
             mode="contained-tonal"
             onPress={() => {
-              // console.log('pressed login button');
               handleLogin();
+              toggleModal();
+              setStartTimer(true);
+              setCountDownTime(countDownTime-1);
             }}
             style={styles.button}>
             <Text style={{color: 'white'}}>SEND OTP</Text>

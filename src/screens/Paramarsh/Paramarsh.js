@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import AuthChecker from '../../utils/authChecker/AuthChecker'
+// import AuthChecker from '../../utils/authChecker/AuthChecker'
 
 
 const Paramarsh = () => {
@@ -11,4 +11,4 @@ const Paramarsh = () => {
   )
 }
 
-export default AuthChecker(Paramarsh);
+export default Paramarsh;

@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import AuthChecker from '../../utils/authChecker/AuthChecker'
+// import AuthChecker from '../../utils/authChecker/AuthChecker'
 
 const Gyan = () => {
   return (
@@ -10,4 +10,4 @@ const Gyan = () => {
   )
 }
 
-export default AuthChecker(Gyan);
+export default Gyan;
