@@ -12,15 +12,19 @@ const Stack = createStackNavigator();
 const AuthNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="LoadingScreen">
-      <Stack.Screen name='LoadingScreen' component={LoadingScreen} options={{headerShown: false}}/>
+      <Stack.Screen
+        name="LoadingScreen"
+        component={LoadingScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Login"
         component={Login}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="HomeScreen"
-        component={BottomTabNavigator}
+        name="Drawer"
+        component={DrawerNavigator}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

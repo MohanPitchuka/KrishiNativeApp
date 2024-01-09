@@ -4,7 +4,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Modal,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import React from 'react';
@@ -16,7 +16,7 @@ import {KRISHI_BACKEND_IP} from '../../utils/constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getToken} from '../../utils/getToken/getToken';
-import { useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -72,8 +72,7 @@ const Login = () => {
       await login.mutate(
         {username: mobileNumber},
         {
-          onSuccess: data => {
-          },
+          onSuccess: data => {},
           onError: data => {
             console.log('Login api call failed - ', data);
           },
@@ -95,18 +94,17 @@ const Login = () => {
                 'krishiAuthToken',
                 data.data.response.payload.token,
               );
-              await AsyncStorage.setItem(
-                'isAuthenticated',
-                'true',
-              );
+              await AsyncStorage.setItem('isAuthenticated', 'true');
               await AsyncStorage.setItem(
                 'accountNumber',
                 data.data.response.payload.account_number,
               );
-              const isAuthenticated = await AsyncStorage.getItem('isAuthenticated');
+              const isAuthenticated = await AsyncStorage.getItem(
+                'isAuthenticated',
+              );
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'HomeScreen' }],
+                routes: [{name: 'HomeScreen'}],
               });
               toggleModal();
             }
@@ -119,22 +117,22 @@ const Login = () => {
     }
   };
 
-  const handleResendOTP = () =>{
+  const handleResendOTP = () => {
     console.log('clicked resend otp');
     setCountDownTime(30);
     setClickedResendOtp(true);
     handleLogin();
-  }
+  };
 
   useEffect(() => {
-    if (startTimer){
-      if (countDownTime !== 0){
+    if (startTimer) {
+      if (countDownTime !== 0) {
         setTimeout(() => {
-          setCountDownTime(countDownTime -1);
+          setCountDownTime(countDownTime - 1);
         }, 1000);
       }
     }
-  }  ,[countDownTime]);
+  }, [countDownTime]);
 
   return (
     <View style={styles.container}>
@@ -167,8 +165,10 @@ const Login = () => {
               padding: 40,
             }}>
             <Text style={styles.title}>Enter OTP</Text>
-            <Text style={{color:'#000000', fontSize:14}}>Please enter the OTP sent to Your Mobile no.</Text>
-            <Text style={{color:'#000000', fontSize:14}}>{mobileNumber}</Text>
+            <Text style={{color: '#000000', fontSize: 14}}>
+              Please enter the OTP sent to Your Mobile no.
+            </Text>
+            <Text style={{color: '#000000', fontSize: 14}}>{mobileNumber}</Text>
             <Button
               mode="outlined"
               style={{
@@ -183,9 +183,12 @@ const Login = () => {
                 fontWeight: 'bold',
                 fontSize: 16,
                 lineHeight: 24,
-                letterSpacing : 0.08,
+                letterSpacing: 0.08,
               }}
-              onPress={toggleModal}>
+              onPress={() => {
+                toggleModal();
+                setCountDownTime(30);
+              }}>
               CHANGE MOBILE NUMBER
             </Button>
             <View style={styles.otpContainer}>
@@ -203,25 +206,68 @@ const Login = () => {
                 />
               ))}
             </View>
-            <Text style={{color: '#03753C', fontSize: 16, lineHeight: 24, letterSpacing: 0.08, fontWeight: '600' }}>{clickedResendOtp === true ? 'OTP send to Mobile Number Successfully.' : ''}</Text>
-            <View style={{flex:1 , flexDirection: 'row' , justifyContent: 'flex-end'}}>
-              {countDownTime !== 0 ? 
-              <Text style={{paddingRight : 16 , color : '#000000', fontSize: 14, fontWeight: '500', lineHeight: 24, letterSpacing: 0.08}}>Wait for {countDownTime} sec</Text>
-              : 
-              <Text></Text>}
-              {countDownTime !== 0 ?  
-              <TouchableOpacity disabled={true}>
-              <Text style={{color: countDownTime !== 0 ?  '#aaaaaa' : '#03753C' , fontSize: 14, fontWeight: '700', lineHeight: 24, letterSpacing: 0.08 }}>Resend OTP</Text>
-              </TouchableOpacity>
-              : 
-              <TouchableOpacity onPress={handleResendOTP}>
-                <Text style={{color: countDownTime !== 0 ?  '#aaaaaa' : '#03753C' , fontSize: 14, fontWeight: '700', lineHeight: 24, letterSpacing: 0.08 }}>Resend OTP</Text>
-              </TouchableOpacity>
-              }
-              
-              
+            <Text
+              style={{
+                color: '#03753C',
+                fontSize: 16,
+                lineHeight: 24,
+                letterSpacing: 0.08,
+                fontWeight: '600',
+              }}>
+              {clickedResendOtp === true
+                ? 'OTP send to Mobile Number Successfully.'
+                : ''}
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
+              {countDownTime !== 0 ? (
+                <Text
+                  style={{
+                    paddingRight: 16,
+                    color: '#000000',
+                    fontSize: 14,
+                    fontWeight: '500',
+                    lineHeight: 24,
+                    letterSpacing: 0.08,
+                  }}>
+                  Wait for {countDownTime} sec
+                </Text>
+              ) : (
+                <Text></Text>
+              )}
+              {countDownTime !== 0 ? (
+                <TouchableOpacity disabled={true}>
+                  <Text
+                    style={{
+                      color: countDownTime !== 0 ? '#aaaaaa' : '#03753C',
+                      fontSize: 14,
+                      fontWeight: '700',
+                      lineHeight: 24,
+                      letterSpacing: 0.08,
+                    }}>
+                    Resend OTP
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={handleResendOTP}>
+                  <Text
+                    style={{
+                      color: countDownTime !== 0 ? '#aaaaaa' : '#03753C',
+                      fontSize: 14,
+                      fontWeight: '700',
+                      lineHeight: 24,
+                      letterSpacing: 0.08,
+                    }}>
+                    Resend OTP
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
-            {otp.every((value) => value !== '') ? (
+            {otp.every(value => value !== '') ? (
               <Button
                 mode="contained-tonal"
                 onPress={() => {
@@ -256,7 +302,7 @@ const Login = () => {
               handleLogin();
               toggleModal();
               setStartTimer(true);
-              setCountDownTime(countDownTime-1);
+              setCountDownTime(countDownTime - 1);
             }}
             style={styles.button}>
             <Text style={{color: 'white'}}>SEND OTP</Text>
@@ -335,11 +381,13 @@ const styles = StyleSheet.create({
   disabledButton: {
     backgroundColor: 'rgba(3, 117, 60, 0.11)',
     width: '90%',
+    margin: -10,
   },
   button: {
     backgroundColor: '#03753C',
     color: 'white',
     width: '90%',
+    margin: -10,
   },
   footerTerms: {
     color: '#03753C',
