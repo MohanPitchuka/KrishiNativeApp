@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 const AuthNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName='HomeScreen'>
+    <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name='Login' component={Login} options={{headerShown:false}}/>
         <Stack.Screen name='HomeScreen' component={BottomTabNavigator}  options={{headerShown:false}}/>
         <Stack.Screen name='Weather Details' component={WeatherDetails}  options={{headerShown:true, headerTitle: 'Weather Details', headerStyle:{backgroundColor:'#03753C'}, headerTintColor:'white', headerTitleStyle:{color:'white'}}}/>
