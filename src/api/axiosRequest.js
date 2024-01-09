@@ -19,7 +19,7 @@ const axiosRequest = async ({
   additionalData = null,
   additionalPath = '',
 }) => {
-  const token = await AsyncStorage.getItem('Krishi_token');
+  const token = await AsyncStorage.getItem('krishiAuthToken');
   let accountNumber = accNo;
 
   if (accNo == '') {
@@ -38,6 +38,7 @@ const axiosRequest = async ({
   } = apiUtils[apiName];
 
   const completeAPIEndpoint = baseUrl + '/api/' + version + endpoint;
+  console.log(completeAPIEndpoint);
 
   const resourceSuffix = isBlank(customResourceSuffix)
     ? endpoint.split('/')[1]
@@ -95,6 +96,8 @@ const axiosRequest = async ({
   
   response.meta = result?.data?.meta || result?.data?.response?.payload?.meta;
 
+  console.log(response);
+
   return apiUtils[apiName].pagination
     ? {
         ...response,
@@ -103,6 +106,8 @@ const axiosRequest = async ({
           : null,
       }
     : response;
+
+
 };
 
 export default axiosRequest;
