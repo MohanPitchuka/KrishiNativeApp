@@ -9,8 +9,9 @@ import {
 import {Card} from 'react-native-paper';
 import React from 'react';
 import {useState, useEffect} from 'react';
+
 // import ProtectedRoute from '../../utils/protectedRoute/ProtectedRoute';
-import AuthChecker from '../../utils/authChecker/AuthChecker';
+// import AuthChecker from '../../utils/authChecker/AuthChecker';
 import {ScrollView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Chip from '../../components/Chip/Chip';
@@ -22,6 +23,7 @@ import {
 } from '../WeatherUpdates/weatherDataComponent';
 import axios from 'axios';
 import CropStageSlider from '../../components/cropCalender/cropStageSlider';
+
 
 const Home = ({navigation}) => {
   const [plotList, setPlotList] = useState([]);
@@ -166,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthChecker(Home);
+export default AuthCheckerHome;
