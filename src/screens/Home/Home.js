@@ -13,7 +13,6 @@ import {useState, useEffect} from 'react';
 // import ProtectedRoute from '../../utils/protectedRoute/ProtectedRoute';
 // import AuthChecker from '../../utils/authChecker/AuthChecker';
 import {ScrollView} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Chip from '../../components/Chip/Chip';
 import {useQuery, useQueries, useMutation} from '@tanstack/react-query';
 import axiosRequest from '../../api/axiosRequest';
@@ -23,7 +22,6 @@ import {
 } from '../WeatherUpdates/weatherDataComponent';
 import axios from 'axios';
 import CropStageSlider from '../../components/cropCalender/cropStageSlider';
-
 
 const Home = ({navigation}) => {
   const [plotList, setPlotList] = useState([]);
@@ -80,11 +78,8 @@ const Home = ({navigation}) => {
   return (
     <ScrollView>
       <Text style={styles.heading}>Weather Update</Text>
-      <Card
-        style={{
-          margin: 16,
-          backgroundColor: 'white',
-        }}>
+      <View
+        style={styles.cardStyle}>
         <View>
           {weatherForecast ? (
             <Chip
@@ -117,13 +112,25 @@ const Home = ({navigation}) => {
             </View>
           )}
         </View>
-      </Card>
+      </View>
       <CropStageSlider />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  cardStyle: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    borderColor: '#327242',
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 3,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    margin: 12
+  },
   heading: {
     fontSize: 22,
     fontWeight: 'bold',

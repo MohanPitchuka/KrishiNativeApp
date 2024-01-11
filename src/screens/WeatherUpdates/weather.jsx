@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {Card} from 'react-native-paper';
 
 // queries
@@ -15,10 +21,9 @@ import {
   weatherForcastThreeDaysData,
 } from './weatherDataComponent';
 
-const WeatherDetails = ({route}) => {
+const WeatherDetails = ({plotId}) => {
   const [weatherActiveChip, setWeatherActiveChip] = useState(0);
   const [weatherForecast, setweatherForecast] = useState(null);
-  const {plotId} = route.params;
 
   const queryData = useQueries({
     queries: [
@@ -44,9 +49,9 @@ const WeatherDetails = ({route}) => {
   });
 
   return (
-    <ScrollView style={{backgroundColor: 'white'}}>
-        <View
-          style={styles.screenView}>
+    <ScrollView>
+      {weatherForcastData ? (
+        <View style={styles.screenView}>
           {weatherForecast && (
             <Chip
               activeChip={weatherActiveChip}
@@ -80,6 +85,11 @@ const WeatherDetails = ({route}) => {
             />
           )}
         </View>
+      ) : (
+        <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color='black'/>
+        </View>
+      )}
     </ScrollView>
   );
 };

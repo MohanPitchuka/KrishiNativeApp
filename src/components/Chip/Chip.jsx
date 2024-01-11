@@ -80,8 +80,9 @@ const Chip = ({
           btnText="View More Weather Updates"
           icon={<RightArrowIcon />}
           onPress={() =>
-            navigation.navigate('Weather Details', {
+            navigation.navigate('PlotDetailsScreen', {
               plotId: plotId,
+              tabId: 1,
             })
           }
         />

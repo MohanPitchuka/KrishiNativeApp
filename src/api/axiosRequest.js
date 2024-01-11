@@ -38,7 +38,7 @@ const axiosRequest = async ({
   } = apiUtils[apiName];
 
   const completeAPIEndpoint = baseUrl + '/api/' + version + endpoint;
-  console.log(completeAPIEndpoint);
+  // console.log(completeAPIEndpoint);
 
   const resourceSuffix = isBlank(customResourceSuffix)
     ? endpoint.split('/')[1]
@@ -81,22 +81,19 @@ const axiosRequest = async ({
       ...additionalData,
     },
   });
-  
+
   if (result?.data?.response) {
-    console.log(result.data)
     response.data =
-    result?.data?.response.payload ||
-    result?.data?.response.data ||
-    result?.data?.response;
+      result?.data?.response.payload ||
+      result?.data?.response.data ||
+      result?.data?.response;
   } else if (result?.data?.payload) {
     response.data = result?.data?.payload?.data || result?.data?.payload;
   } else {
     response.data = result;
   }
-  
-  response.meta = result?.data?.meta || result?.data?.response?.payload?.meta;
 
-  console.log(response);
+  response.meta = result?.data?.meta || result?.data?.response?.payload?.meta;
 
   return apiUtils[apiName].pagination
     ? {
@@ -106,8 +103,6 @@ const axiosRequest = async ({
           : null,
       }
     : response;
-
-
 };
 
 export default axiosRequest;

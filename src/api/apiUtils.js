@@ -2,7 +2,7 @@ import {KRISHI_BACKEND_IP} from '../utils/constants/constants';
 
 // const JAMS_HOST = KRISHI_BACKEND_IP
 const JAMS_HOST = KRISHI_BACKEND_IP;
-const KMS_HOST = "https://kms.sit.cats.jvts.net";
+const KMS_HOST = 'https://kms.sit.cats.jvts.net';
 
 const apiUtils = {
   getPlot: {
@@ -12,6 +12,18 @@ const apiUtils = {
     requestType: 'GET',
     params: {
       action: 'get_plot',
+    },
+  },
+
+  getCrop: {
+    baseUrl: JAMS_HOST,
+    version: 'v3',
+    endpoint: '/plot/get-static-info/',
+    requestType: 'GET',
+    customResourceSuffix: 'plot',
+    params: {
+      action: 'get_plot_static_info',
+      info: 'crop',
     },
   },
 

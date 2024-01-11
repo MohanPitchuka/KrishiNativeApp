@@ -12,6 +12,7 @@ import CropCalenderScreen from '../screens/CropCalenderScreen/CropCalenderScreen
 import StageDetails from '../screens/stageDetails/stageDetails';
 import DeficiencyScreen from '../screens/DeficiencyScreen/DeficiencyScreen';
 import LoadingScreen from '../screens/LoadingScreen/LoadingScreen';
+import PlotDetails from '../screens/PlotDetails/plotDetails';
 
 
 const Stack = createStackNavigator();
@@ -39,7 +40,7 @@ const AuthNavigator = () => {
       <Stack.Screen name='CropCalenderScreen' component={CropCalenderScreen}  options={{headerShown:true, headerTitle: 'Crop Calender', headerStyle:{backgroundColor:'#03753C'}, headerTintColor:'white', headerTitleStyle:{color:'white'}}}/>
       <Stack.Screen name='StageDetailsScreen' component={StageDetails} options={{headerShown:true, headerTitle: 'Stage Details', headerStyle:{backgroundColor:'#03753C'}, headerTintColor:'white', headerTitleStyle:{color:'white'}}}/>
       <Stack.Screen name='DeficiencyDetailsScreen' component={DeficiencyScreen} options={{headerShown:true, headerTitle: 'Deficiency Details', headerStyle:{backgroundColor:'#03753C'}, headerTintColor:'white', headerTitleStyle:{color:'white'}}}/>
-
+      <Stack.Screen name='PlotDetailsScreen' component={PlotDetails} options={{headerShown:true, headerTitle: 'Plot Details', headerStyle:{backgroundColor:'#03753C'}, headerTintColor:'white', headerTitleStyle:{color:'white'}}}/>
     </Stack.Navigator>
   );
 };
